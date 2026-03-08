@@ -39,7 +39,7 @@ function TrainersPage({ addToCart, getQuantity }) {
               key={trainer.id}
               className={`rounded-xl border p-4 text-left transition ${
                 isPartTimeActive || isMonthlyActive
-                  ? 'border-cyan-400 bg-cyan-50'
+                  ? 'border-blue-400 bg-blue-50'
                   : 'border-slate-200 bg-slate-50 hover:border-slate-300'
               }`}
             >
@@ -54,11 +54,11 @@ function TrainersPage({ addToCart, getQuantity }) {
               <div className="mt-4 space-y-2 text-sm text-slate-700">
                 <p>
                   Part-time session:{' '}
-                  <span className="font-semibold text-cyan-700">{formatMMK(trainer.partTimePrice)}</span>
+                  <span className="font-semibold text-blue-700">{formatMMK(trainer.partTimePrice)}</span>
                 </p>
                 <p>
                   Monthly package:{' '}
-                  <span className="font-semibold text-cyan-700">{formatMMK(trainer.monthlyPrice)}</span>
+                  <span className="font-semibold text-blue-700">{formatMMK(trainer.monthlyPrice)}</span>
                 </p>
               </div>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -66,7 +66,7 @@ function TrainersPage({ addToCart, getQuantity }) {
                   type="button"
                   onClick={() => selectTrainerOffer(trainer, 'part-time')}
                   className={`rounded-lg px-3 py-2 text-sm font-semibold text-white transition ${
-                    isPartTimeActive ? 'bg-cyan-700 hover:bg-cyan-600' : 'bg-cyan-600 hover:bg-cyan-500'
+                    isPartTimeActive ? 'bg-blue-700 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-500'
                   }`}
                 >
                   {isPartTimeActive ? 'Added to Bucket' : 'Hire Part-time'}
@@ -75,7 +75,7 @@ function TrainersPage({ addToCart, getQuantity }) {
                   type="button"
                   onClick={() => selectTrainerOffer(trainer, 'monthly')}
                   className={`rounded-lg px-3 py-2 text-sm font-semibold text-white transition ${
-                    isMonthlyActive ? 'bg-sky-700 hover:bg-sky-600' : 'bg-sky-600 hover:bg-sky-500'
+                    isMonthlyActive ? 'bg-blue-700 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-500'
                   }`}
                 >
                   {isMonthlyActive ? 'Added to Bucket' : 'Hire Monthly'}
