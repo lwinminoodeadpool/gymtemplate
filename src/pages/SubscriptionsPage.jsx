@@ -30,7 +30,7 @@ function SubscriptionsPage({ addToCart, getQuantity }) {
             <div
               key={plan.id}
               className={`rounded-xl border p-4 text-left transition ${
-                active ? 'border-orange-400 bg-orange-50' : 'border-slate-200 bg-slate-50 hover:border-slate-300'
+                active ? 'border-blue-500 bg-blue-50' : 'border-slate-200 bg-slate-50 hover:border-slate-300'
               }`}
             >
               <img
@@ -40,7 +40,7 @@ function SubscriptionsPage({ addToCart, getQuantity }) {
                 loading="lazy"
               />
               <h3 className="mt-4 text-lg font-semibold text-slate-900">{plan.title}</h3>
-              <p className="mt-1 text-2xl font-bold text-orange-600">
+              <p className="mt-1 text-2xl font-bold text-blue-600">
                 {formatMMK(plan.price)} <span className="text-sm text-slate-600">{plan.period}</span>
               </p>
               <ul className="mt-3 space-y-1 text-sm text-slate-600">
@@ -52,7 +52,7 @@ function SubscriptionsPage({ addToCart, getQuantity }) {
                 type="button"
                 onClick={() => handleSubscribe(plan)}
                 className={`mt-4 w-full rounded-lg px-3 py-2 text-sm font-semibold text-white transition ${
-                  active ? 'bg-orange-600 hover:bg-orange-500' : 'bg-orange-500 hover:bg-orange-400'
+                  active ? 'bg-blue-600 hover:bg-blue-500' : 'bg-blue-500 hover:bg-blue-400'
                 }`}
               >
                 {active ? 'Added to Bucket' : `Subscribe ${plan.title.includes('Monthly') ? 'Monthly' : 'Yearly'}`}

@@ -115,8 +115,8 @@ const initialOrders = [
 function SectionHeader({ title, subtitle }) {
   return (
     <div className="mb-5">
-      <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
-      <p className="mt-1 text-sm text-slate-600">{subtitle}</p>
+      <h2 className="text-2xl font-semibold text-white">{title}</h2>
+      <p className="mt-1 text-sm text-blue-100">{subtitle}</p>
     </div>
   )
 }
@@ -468,21 +468,63 @@ function App() {
     </div>
   )
 
-  const renderSubscriptions = () => (
-    <div className="space-y-4">
-      <SectionHeader
-        title="Manage Subscriptions"
-        subtitle="Create, edit, or disable monthly/yearly membership plans."
-      />
+  ///////////////////
 
-      <form onSubmit={handleSaveSubscription} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  const renderSubscriptions = () => (
+    <div className="space-y-6 bg-[#F8FAFC] p-6 rounded-2xl">
+
+      {/* Header */}
+      <div className="rounded-2xl bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] p-6 text-white shadow-md">
+        <SectionHeader
+          title="Manage Subscriptions"
+          subtitle="Create, edit, or disable monthly/yearly membership plans."
+        />
+      </div>
+
+      {/* Stats */}
+      <div className="grid gap-4 md:grid-cols-3">
+
+        <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
+          <p className="text-xs text-[#64748B]">Total Plans</p>
+          <h3 className="text-2xl font-semibold text-[#0F172A]">
+            {subscriptions.length}
+          </h3>
+        </div>
+
+        <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
+          <p className="text-xs text-[#64748B]">Active Plans</p>
+          <h3 className="text-2xl font-semibold text-[#22C55E]">
+            {subscriptions.filter(p => p.status === "active").length}
+          </h3>
+        </div>
+
+        <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
+          <p className="text-xs text-[#64748B]">Average Price</p>
+          <h3 className="text-2xl font-semibold text-[#2563EB]">
+            {formatMMK(
+              subscriptions.reduce((sum, p) => sum + Number(p.price), 0) /
+              (subscriptions.length || 1)
+            )}
+          </h3>
+        </div>
+
+      </div>
+
+      {/* Form */}
+      <form
+        onSubmit={handleSaveSubscription}
+        className="rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-6 shadow-sm space-y-5"
+      >
         <div className="grid gap-4 md:grid-cols-4">
+
           <div className="space-y-1">
             <FieldLabel>Plan Title</FieldLabel>
             <input
               value={subscriptionForm.title}
-              onChange={(e) => setSubscriptionForm((prev) => ({ ...prev, title: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setSubscriptionForm((prev) => ({ ...prev, title: e.target.value }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
               placeholder="Monthly Membership"
               required
             />
@@ -494,8 +536,10 @@ function App() {
               type="number"
               min="0"
               value={subscriptionForm.price}
-              onChange={(e) => setSubscriptionForm((prev) => ({ ...prev, price: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setSubscriptionForm((prev) => ({ ...prev, price: e.target.value }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
               required
             />
           </div>
@@ -504,8 +548,10 @@ function App() {
             <FieldLabel>Period</FieldLabel>
             <select
               value={subscriptionForm.period}
-              onChange={(e) => setSubscriptionForm((prev) => ({ ...prev, period: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setSubscriptionForm((prev) => ({ ...prev, period: e.target.value }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
             >
               <option value="month">Month</option>
               <option value="year">Year</option>
@@ -516,8 +562,10 @@ function App() {
             <FieldLabel>Status</FieldLabel>
             <select
               value={subscriptionForm.status}
-              onChange={(e) => setSubscriptionForm((prev) => ({ ...prev, status: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setSubscriptionForm((prev) => ({ ...prev, status: e.target.value }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -526,65 +574,172 @@ function App() {
               ))}
             </select>
           </div>
+
         </div>
 
-        <div className="mt-4 flex gap-2">
-          <button type="submit" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-500">
-            {subscriptionForm.id ? 'Update Plan' : 'Add Plan'}
+        <div className="flex gap-3 pt-2">
+          <button
+            type="submit"
+            className="rounded-lg bg-[#2563EB] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
+          >
+            {subscriptionForm.id ? "Update Plan" : "Add Plan"}
           </button>
-          <button type="button" onClick={resetSubscriptionForm} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+
+          <button
+            type="button"
+            onClick={resetSubscriptionForm}
+            className="rounded-lg border border-[#E2E8F0] px-5 py-2 text-sm font-semibold text-[#0F172A] hover:bg-[#F1F5F9]"
+          >
             Reset
           </button>
         </div>
       </form>
 
-      <div className="grid gap-3">
+      {/* Search */}
+      <div className="flex items-center justify-between">
+        <input
+          type="text"
+          placeholder="Search subscription plans..."
+          className="w-full max-w-sm rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-sm text-[#0F172A] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
+        />
+      </div>
+
+      {/* Subscription Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+
         {subscriptions.map((item) => (
-          <article key={item.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <h3 className="text-base font-semibold text-slate-900">{item.title}</h3>
-                <p className="text-sm text-slate-600">
-                  {formatMMK(item.price)} / {item.period}
-                </p>
-                <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">Status: {item.status}</p>
+          <article
+            key={item.id}
+            className="group rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]/40"
+          >
+            <div className="flex items-start justify-between">
+
+              <div className="flex gap-3">
+
+                {/* Plan Icon */}
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB]/10 text-[#2563EB] font-semibold">
+                  {item.title.charAt(0)}
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold text-[#0F172A]">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-xs text-[#64748B]">
+                    {item.period === "month" ? "Monthly Plan" : "Yearly Plan"}
+                  </p>
+
+                  <div className="mt-1 flex items-center gap-2 text-xs text-[#64748B]">
+                    <span
+                      className={`h-2 w-2 rounded-full ${item.status === "active"
+                          ? "bg-[#22C55E]"
+                          : "bg-gray-400"
+                        }`}
+                    ></span>
+                    {item.status}
+                  </div>
+                </div>
+
               </div>
 
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setSubscriptionForm({ ...item, price: String(item.price) })}
-                  className="rounded-md bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-200"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDeleteSubscription(item.id)}
-                  className="rounded-md bg-red-100 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-200"
-                >
-                  Delete
-                </button>
-              </div>
+            </div>
+
+            {/* Price Badge */}
+            <div className="mt-4 flex flex-wrap gap-2">
+
+              <span className="rounded-lg bg-[#9333EA]/10 px-3 py-1 text-xs font-semibold text-[#9333EA]">
+                {formatMMK(item.price)} / {item.period}
+              </span>
+
+            </div>
+
+            {/* Actions */}
+            <div className="mt-4 flex gap-2">
+
+              <button
+                type="button"
+                onClick={() =>
+                  setSubscriptionForm({ ...item, price: String(item.price) })
+                }
+                className="flex-1 rounded-lg bg-[#F1F5F9] px-3 py-2 text-xs font-semibold text-[#0F172A] transition hover:bg-[#E2E8F0]"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleDeleteSubscription(item.id)}
+                className="flex-1 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-100"
+              >
+                Delete
+              </button>
+
             </div>
           </article>
         ))}
+
       </div>
     </div>
   )
 
-  const renderTrainers = () => (
-    <div className="space-y-4">
-      <SectionHeader title="Manage Trainers" subtitle="Control trainer pricing, specialties, and availability." />
+  //////////////////////
 
-      <form onSubmit={handleSaveTrainer} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  const renderTrainers = () => (
+    <div className="space-y-6 bg-[#F8FAFC] p-6 rounded-2xl">
+
+      {/* Header */}
+      <div className="rounded-2xl bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] p-6 shadow-md">
+        <SectionHeader
+          title="Manage Trainers"
+          subtitle="Control trainer pricing, specialties, and availability."
+        />
+      </div>
+
+      {/* Stats */}
+      <div className="grid gap-4 md:grid-cols-3">
+
+        <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
+          <p className="text-xs text-[#64748B]">Total Trainers</p>
+          <h3 className="text-2xl font-semibold text-[#0F172A]">
+            {trainers.length}
+          </h3>
+        </div>
+
+        <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
+          <p className="text-xs text-[#64748B]">Active Trainers</p>
+          <h3 className="text-2xl font-semibold text-[#22C55E]">
+            {trainers.filter((t) => t.status === "active").length}
+          </h3>
+        </div>
+
+        <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 shadow-sm">
+          <p className="text-xs text-[#64748B]">Average Monthly Price</p>
+          <h3 className="text-2xl font-semibold text-[#2563EB]">
+            {formatMMK(
+              trainers.reduce((sum, t) => sum + Number(t.monthlyPrice), 0) /
+              (trainers.length || 1)
+            )}
+          </h3>
+        </div>
+
+      </div>
+
+      {/* Form */}
+      <form
+        onSubmit={handleSaveTrainer}
+        className="rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-6 shadow-sm space-y-5"
+      >
         <div className="grid gap-4 md:grid-cols-3">
+
           <div className="space-y-1">
             <FieldLabel>Trainer Name</FieldLabel>
             <input
               value={trainerForm.name}
-              onChange={(e) => setTrainerForm((prev) => ({ ...prev, name: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setTrainerForm((prev) => ({ ...prev, name: e.target.value }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
               required
             />
           </div>
@@ -593,8 +748,10 @@ function App() {
             <FieldLabel>Specialty</FieldLabel>
             <input
               value={trainerForm.specialty}
-              onChange={(e) => setTrainerForm((prev) => ({ ...prev, specialty: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setTrainerForm((prev) => ({ ...prev, specialty: e.target.value }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
               required
             />
           </div>
@@ -603,8 +760,10 @@ function App() {
             <FieldLabel>Status</FieldLabel>
             <select
               value={trainerForm.status}
-              onChange={(e) => setTrainerForm((prev) => ({ ...prev, status: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setTrainerForm((prev) => ({ ...prev, status: e.target.value }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
             >
               {statusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -620,8 +779,13 @@ function App() {
               type="number"
               min="0"
               value={trainerForm.partTimePrice}
-              onChange={(e) => setTrainerForm((prev) => ({ ...prev, partTimePrice: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setTrainerForm((prev) => ({
+                  ...prev,
+                  partTimePrice: e.target.value,
+                }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
               required
             />
           </div>
@@ -632,64 +796,125 @@ function App() {
               type="number"
               min="0"
               value={trainerForm.monthlyPrice}
-              onChange={(e) => setTrainerForm((prev) => ({ ...prev, monthlyPrice: e.target.value }))}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+              onChange={(e) =>
+                setTrainerForm((prev) => ({
+                  ...prev,
+                  monthlyPrice: e.target.value,
+                }))
+              }
+              className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
               required
             />
           </div>
+
         </div>
 
-        <div className="mt-4 flex gap-2">
-          <button type="submit" className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-600">
-            {trainerForm.id ? 'Update Trainer' : 'Add Trainer'}
+        <div className="flex gap-3 pt-2">
+          <button
+            type="submit"
+            className="rounded-lg bg-[#2563EB] px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1D4ED8]"
+          >
+            {trainerForm.id ? "Update Trainer" : "Add Trainer"}
           </button>
-          <button type="button" onClick={resetTrainerForm} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+
+          <button
+            type="button"
+            onClick={resetTrainerForm}
+            className="rounded-lg border border-[#E2E8F0] px-5 py-2 text-sm font-semibold text-[#0F172A] hover:bg-[#F1F5F9]"
+          >
             Reset
           </button>
         </div>
       </form>
 
-      <div className="grid gap-3">
+      {/* Search Bar */}
+      <div className="flex items-center justify-between">
+        <input
+          type="text"
+          placeholder="Search trainers..."
+          className="w-full max-w-sm rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-sm text-[#0F172A] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
+        />
+      </div>
+
+      {/* Trainer Cards */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {trainers.map((item) => (
-          <article key={item.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <h3 className="text-base font-semibold text-slate-900">{item.name}</h3>
-                <p className="text-sm text-slate-600">{item.specialty}</p>
-                <p className="mt-1 text-sm text-slate-700">
-                  Part-time: {formatMMK(item.partTimePrice)} | Monthly: {formatMMK(item.monthlyPrice)}
-                </p>
-                <p className="mt-1 text-xs uppercase tracking-wide text-slate-500">Status: {item.status}</p>
+          <article
+            key={item.id}
+            className="group rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[#2563EB]/40"
+          >
+            <div className="flex items-start justify-between">
+
+              <div className="flex gap-3">
+
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB]/10 text-[#2563EB] font-semibold">
+                  {item.name.charAt(0)}
+                </div>
+
+                <div>
+                  <h3 className="text-base font-semibold text-[#0F172A]">
+                    {item.name}
+                  </h3>
+
+                  <p className="text-xs font-medium text-[#9333EA]">
+                    {item.specialty}
+                  </p>
+
+                  <div className="mt-1 flex items-center gap-2 text-xs text-[#64748B]">
+                    <span
+                      className={`h-2 w-2 rounded-full ${item.status === "active"
+                        ? "bg-[#22C55E]"
+                        : "bg-gray-400"
+                        }`}
+                    ></span>
+                    {item.status}
+                  </div>
+                </div>
+
               </div>
 
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setTrainerForm({
-                      ...item,
-                      partTimePrice: String(item.partTimePrice),
-                      monthlyPrice: String(item.monthlyPrice),
-                    })
-                  }
-                  className="rounded-md bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-200"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDeleteTrainer(item.id)}
-                  className="rounded-md bg-red-100 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-200"
-                >
-                  Delete
-                </button>
-              </div>
+            </div>
+
+            <div className="mt-4 flex gap-2 flex-wrap">
+              <span className="rounded-lg bg-[#2563EB]/10 px-3 py-1 text-xs font-semibold text-[#2563EB]">
+                Part-time: {formatMMK(item.partTimePrice)}
+              </span>
+
+              <span className="rounded-lg bg-[#9333EA]/10 px-3 py-1 text-xs font-semibold text-[#9333EA]">
+                Monthly: {formatMMK(item.monthlyPrice)}
+              </span>
+            </div>
+
+            <div className="mt-4 flex gap-2">
+              <button
+                type="button"
+                onClick={() =>
+                  setTrainerForm({
+                    ...item,
+                    partTimePrice: String(item.partTimePrice),
+                    monthlyPrice: String(item.monthlyPrice),
+                  })
+                }
+                className="flex-1 rounded-lg bg-[#F1F5F9] px-3 py-2 text-xs font-semibold text-[#0F172A] transition hover:bg-[#E2E8F0]"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleDeleteTrainer(item.id)}
+                className="flex-1 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-100"
+              >
+                Delete
+              </button>
             </div>
           </article>
         ))}
       </div>
     </div>
   )
+
+  /////////
 
   const renderClasses = () => (
     <div className="space-y-4">
@@ -1221,11 +1446,10 @@ function App() {
                 key={item.id}
                 type="button"
                 onClick={() => setActiveTab(item.id)}
-                className={`w-full rounded-lg px-3 py-2 text-left text-sm font-semibold transition ${
-                  activeTab === item.id
-                    ? 'bg-orange-100 text-orange-700'
-                    : 'text-slate-600 hover:bg-slate-100'
-                }`}
+                className={`w-full rounded-lg px-3 py-2 text-left text-sm font-semibold transition ${activeTab === item.id
+                  ? 'bg-orange-100 text-orange-700'
+                  : 'text-slate-600 hover:bg-slate-100'
+                  }`}
               >
                 {item.label}
               </button>
@@ -1240,11 +1464,10 @@ function App() {
                 key={item.id}
                 type="button"
                 onClick={() => setActiveTab(item.id)}
-                className={`whitespace-nowrap rounded-lg px-3 py-2 text-xs font-semibold transition ${
-                  activeTab === item.id
-                    ? 'bg-orange-100 text-orange-700'
-                    : 'text-slate-600 hover:bg-slate-100'
-                }`}
+                className={`whitespace-nowrap rounded-lg px-3 py-2 text-xs font-semibold transition ${activeTab === item.id
+                  ? 'bg-orange-100 text-orange-700'
+                  : 'text-slate-600 hover:bg-slate-100'
+                  }`}
               >
                 {item.label}
               </button>
